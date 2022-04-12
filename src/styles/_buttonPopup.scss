@@ -1,0 +1,53 @@
+@import "variables.scss";
+
+.button-popup {
+  position: fixed;
+  background-color: rgba(5, 38, 98, 0.8);
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: 500;
+  border-radius: 3px;
+  color: white;
+  z-index: 1;
+  width: 70%;
+
+  &.initial-render {
+    display: none;
+  }
+
+  &.on {
+    animation: popupOn 2500ms;
+  }
+
+  &.off {
+    animation: popupOff 700ms;
+    animation-fill-mode: forwards;
+  }
+}
+
+@keyframes popupOn {
+  0% {
+    transform: translate(-50%, -300px);
+  }
+  25% {
+    transform: translate(-50%, 0);
+  }
+  100% {
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes popupOff {
+  0% {
+    transform: translate(-50%, 0);
+  }
+  55% {
+    transform: translate(-50%, -300px);
+  }
+  100% {
+    transform: translate(-50%, -300px);
+  }
+}

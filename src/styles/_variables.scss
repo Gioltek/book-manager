@@ -1,0 +1,30 @@
+//* COLORS
+// Text colors
+$textColor: hsl(0, 0%, 25%);
+$textColorLight: hsl(212, 88%, 90%);
+$textColorLightHover: hsl(0, 0%, 100%);
+$textColorDark: hsl(213, 65%, 40%);
+$textColorDarkHover: hsl(213, 73%, 28%);
+$textColorDarkActive: hsl(213, 79%, 16%);
+// Main colors
+$lightColor: rgb(69, 141, 188);
+$lightColorHover: hsl(204, 59%, 35%);
+$bgColor: rgba(248, 250, 255, 0.95);
+// Break points
+$mobile: 800px;
+
+//* MIXINS
+
+@mixin defaultBtn {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+@mixin main {
+  background-color: $bgColor;
+  margin-top: 2rem;
+  padding: 1rem;
+  box-shadow: 0 8px 10px 2px hsla(0, 0%, 0%, 0.1);
+  border-radius: 3px;
+}
