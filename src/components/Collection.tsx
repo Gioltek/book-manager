@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import SingleFavourite from "./SingleFavourite";
@@ -19,6 +19,7 @@ import "swiper/css/scrollbar";
 // ICONS
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons/faAngleDown";
+import { faAngleUp } from "@fortawesome/free-solid-svg-icons/faAngleUp";
 import { faClose } from "@fortawesome/free-solid-svg-icons/faClose";
 
 const Collection = () => {
@@ -30,10 +31,9 @@ const Collection = () => {
   const [favouritesFetched, setFavouritesFetched] = useState<Result[]>([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [canRender, setCanRender] = useState(false);
-  const [deleteMode, setDeleteMode] = useState(false);
-  const [showMoreOff, setShowMoreOff] = useState(false);
   const [showMore, setShowMore] = useState("");
   const refetch = localStorage.getItem("refetch");
+  const widthRef = useRef<HTMLDivElement>(null);
 
   // ADJUST SLIDES BASED ON WINDOW WIDTH
   useEffect(() => {
@@ -59,6 +59,7 @@ const Collection = () => {
     setIsLoading(true);
 
     async function fetchData(id: string) {
+      console.log("1"); // NON FETCHA QUA
       const res = await fetch(
         `https://www.googleapis.com/books/v1/volumes/${id}`
       );
@@ -80,6 +81,7 @@ const Collection = () => {
     }
 
     function setStates() {
+      console.log("2");
       const toReadLS = localStorage.getItem("TO READ");
       const finishedLS = localStorage.getItem("FINISHED");
       const favouritesLS = localStorage.getItem("FAVOURITES");
@@ -94,10 +96,9 @@ const Collection = () => {
       }
     }
 
+    console.log("3");
     if (refetch === "TRUE") {
       if (library.books) {
-        console.log("try");
-
         const toReadIds = [...library.books.toRead];
         const finishedIds = [...library.books.finished];
         const favouritesIds = [...library.books.favourites];
@@ -140,203 +141,133 @@ const Collection = () => {
     }
   }, [library]);
 
-  const handleCloseModal = () => {
-    setShowMoreOff(true);
-    const timeout = setTimeout(() => {
-      document.body.classList.remove("modal-open");
-      setShowMoreOff(false);
-      setShowMore("");
-      window.location.reload();
-      clearTimeout(timeout);
-    }, 600);
-  };
-
   return canRender ? (
     <main className="collections-main">
       <h1>Your Collection</h1>
-      <div className="delete-mode">
-        <p>Delete mode</p>
-        <label className="switch">
-          <input
-            type="checkbox"
-            checked={deleteMode}
-            onChange={(e) => setDeleteMode(e.target.checked)}
-          />
-          <span className="slider round"></span>
-        </label>
+
+      <div className="books-container">
+        <h2>
+          Books<span> To Read</span>
+        </h2>
+        <div className="underline"></div>
+        {toReadFetched.length < 1 && (
+          <div className="default-no-books">
+            <p>You have not added any book in this collection yet.</p>
+            <Link to="/">Start your research</Link>
+          </div>
+        )}
+        <div
+          className={showMore === "To Read" ? "booklist extended" : "booklist"}
+          ref={widthRef}
+        >
+          {toReadFetched.map((item: Result) => (
+            <SingleToRead key={item.id} info={item} />
+          ))}
+        </div>
+
+        {toReadFetched.length > 4 && (
+          <div className="show-collection">
+            {showMore === "To Read" ? (
+              <FontAwesomeIcon
+                icon={faAngleUp}
+                onClick={() => {
+                  setShowMore("");
+                }}
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faAngleDown}
+                onClick={() => {
+                  setShowMore("To Read");
+                }}
+              />
+            )}
+          </div>
+        )}
       </div>
 
-      {showMore === "To Read" ? (
-        <div className={showMoreOff ? "show-more off" : "show-more"}>
-          <div className="flex-header">
-            <h2>
-              Books<span> {showMore}</span>
-            </h2>
-            <FontAwesomeIcon
-              className="close-modal"
-              icon={faClose}
-              onClick={handleCloseModal}
-            />
+      <div className="books-container">
+        <h2>
+          <span>Finished </span>Books
+        </h2>
+        <div className="underline"></div>
+        {finishedFetched.length < 1 && (
+          <div className="default-no-books">
+            <p>You have not added any book in this collection yet.</p>
+            <Link to="/">Start your research</Link>
           </div>
-          {toReadFetched.map((item: Result) => (
-            <ShowMore info={item} key={item.id} label={showMore} />
-          ))}
-        </div>
-      ) : (
-        <div className="books-container">
-          <h2>
-            Books<span> To Read</span>
-          </h2>
-          <div className="underline"></div>
-          {toReadFetched.length < 1 && (
-            <div className="default-no-books">
-              <p>You have not added any book in this collection yet.</p>
-              <Link to="/">Start your research</Link>
-            </div>
-          )}
-          <Swiper
-            modules={[Scrollbar]}
-            spaceBetween={10}
-            slidesPerView={windowWidth / 190}
-            scrollbar={{ draggable: true }}
-            watchOverflow
-          >
-            {toReadFetched.map((item: Result) => (
-              <SwiperSlide key={item.id}>
-                <SingleToRead
-                  key={item.id}
-                  info={item}
-                  showDelete={deleteMode}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-
-          <div className="show-collection">
-            <FontAwesomeIcon
-              icon={faAngleDown}
-              onClick={() => {
-                document.body.classList.add("modal-open");
-                setShowMore("To Read");
-              }}
-            />
-          </div>
-        </div>
-      )}
-
-      {showMore === "Finished" ? (
-        <div className={showMoreOff ? "show-more off" : "show-more"}>
-          <div className="flex-header">
-            <h2>
-              <span>{showMore} </span>Books
-            </h2>
-            <FontAwesomeIcon
-              className="close-modal"
-              icon={faClose}
-              onClick={handleCloseModal}
-            />
-          </div>
+        )}
+        <div
+          className={showMore === "Finished" ? "booklist extended" : "booklist"}
+          ref={widthRef}
+        >
           {finishedFetched.map((item: Result) => (
-            <ShowMore info={item} key={item.id} label={showMore} />
+            <SingleFinished key={item.id} info={item} />
           ))}
         </div>
-      ) : (
-        <div className="books-container">
-          <h2>
-            <span>Finished </span>Books
-          </h2>
-          <div className="underline"></div>
-          {finishedFetched.length < 1 && (
-            <div className="default-no-books">
-              <p>You have not added any book in this collection yet.</p>
-              <Link to="/">Start your research</Link>
-            </div>
-          )}
-          <Swiper
-            modules={[Scrollbar]}
-            spaceBetween={10}
-            slidesPerView={windowWidth / 190}
-            scrollbar={{ draggable: true }}
-            watchOverflow
-          >
-            {finishedFetched.map((item: Result) => (
-              <SwiperSlide key={item.id}>
-                <SingleFinished
-                  key={item.id}
-                  info={item}
-                  showDelete={deleteMode}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+        {finishedFetched.length > 4 && (
           <div className="show-collection">
-            <FontAwesomeIcon
-              icon={faAngleDown}
-              onClick={() => {
-                document.body.classList.add("modal-open");
-                setShowMore("Finished");
-              }}
-            />
+            {showMore === "Finished" ? (
+              <FontAwesomeIcon
+                icon={faAngleUp}
+                onClick={() => {
+                  setShowMore("");
+                }}
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faAngleDown}
+                onClick={() => {
+                  setShowMore("Finished");
+                }}
+              />
+            )}
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      {showMore === "Favourites" ? (
-        <div className={showMoreOff ? "show-more off" : "show-more"}>
-          <div className="flex-header">
-            <h2>
-              <span>Favourite </span>Books
-            </h2>
-            <FontAwesomeIcon
-              className="close-modal"
-              icon={faClose}
-              onClick={handleCloseModal}
-            />
+      <div className="books-container">
+        <h2>
+          <span>Favourite </span>Books
+        </h2>
+        <div className="underline"></div>
+        {favouritesFetched.length < 1 && (
+          <div className="default-no-books">
+            <p>You have not added any book in this collection yet.</p>
+            <Link to="/">Start your research</Link>
           </div>
+        )}
+        <div
+          className={
+            showMore === "Favourites" ? "booklist extended" : "booklist"
+          }
+          ref={widthRef}
+        >
           {favouritesFetched.map((item: Result) => (
-            <ShowMore info={item} key={item.id} label={showMore} />
+            <SingleFavourite key={item.id} info={item} />
           ))}
         </div>
-      ) : (
-        <div className="books-container">
-          <h2>
-            <span>Favourite </span>Books
-          </h2>
-          <div className="underline"></div>
-          {favouritesFetched.length < 1 && (
-            <div className="default-no-books">
-              <p>You have not added any book in this collection yet.</p>
-              <Link to="/">Start your research</Link>
-            </div>
-          )}
-          <Swiper
-            modules={[Scrollbar]}
-            spaceBetween={10}
-            slidesPerView={windowWidth / 190}
-            scrollbar={{ draggable: true }}
-            watchOverflow
-          >
-            {favouritesFetched.map((item: Result) => (
-              <SwiperSlide key={item.id}>
-                <SingleFavourite
-                  key={item.id}
-                  info={item}
-                  showDelete={deleteMode}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+
+        {toReadFetched.length > 4 && (
           <div className="show-collection">
-            <FontAwesomeIcon
-              icon={faAngleDown}
-              onClick={() => {
-                document.body.classList.add("modal-open");
-                setShowMore("Favourites");
-              }}
-            />
+            {showMore === "Favourites" ? (
+              <FontAwesomeIcon
+                icon={faAngleUp}
+                onClick={() => {
+                  setShowMore("");
+                }}
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faAngleDown}
+                onClick={() => {
+                  setShowMore("Favourites");
+                }}
+              />
+            )}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </main>
   ) : null;
 };

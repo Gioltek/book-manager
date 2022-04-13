@@ -2,11 +2,11 @@
 @import url("https://use.fontawesome.com/releases/v5.13.0/css/all.css");
 
 .book-collection-single {
+  flex: 0 0 19%;
   position: relative;
-  min-width: 7rem;
-  max-width: 7rem;
   height: 12rem;
-  margin: 0.5rem 0;
+  min-width: 7rem;
+  margin: 0.5rem auto;
   transition-duration: 300ms;
   overflow: hidden;
   user-select: none;
@@ -28,7 +28,7 @@
     border-radius: 3px;
   }
   &.removed {
-    animation: removed 800ms;
+    animation: removed 1200ms;
     animation-fill-mode: forwards;
   }
   p {
@@ -36,13 +36,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-  }
-  &.active {
-    p {
-      white-space: normal;
-      text-overflow: none;
-      overflow: auto;
-    }
+    width: 7rem;
   }
 
   a {
@@ -63,7 +57,7 @@
     opacity: 0.7;
     background-color: $textColorDark;
     border: none;
-    width: 100%;
+    width: 7rem;
     cursor: pointer;
     border-radius: 3px 3px 0 0;
     transform: translateY(-30px);
@@ -82,61 +76,83 @@
 @keyframes removed {
   0% {
     opacity: 1;
-    max-width: 7rem;
+    position: relative;
+  }
+  20% {
+    transform: scale(1.1);
+  }
+  80% {
+    opacity: 0;
   }
   100% {
-    max-width: 7rem;
     opacity: 0;
-    display: none;
     pointer-events: none;
-  }
-}
+    position: absolute;
+    top: 0;
+    left: -500px;
 
-@keyframes removed {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    display: none;
-    pointer-events: none;
+    transform: scale(0);
   }
 }
 
 @media (max-width: $mobile) {
   .book-collection-single {
-    overflow: visible;
-    margin-top: 0.6rem;
+    display: flex;
+    flex-direction: row;
+    margin-top: 0rem;
     position: relative;
-    &:hover {
-      transform: none;
-    }
-  }
-  .book-collection-single .delete-btn {
-    transform: translateY(0px);
-    position: absolute;
+    flex: initial;
+    position: relative;
+    min-width: 1px;
     transition-duration: 300ms;
-    width: 1.75rem;
-    height: 1.75rem;
-    border-radius: 3px 0 3px 0;
     overflow: hidden;
-    top: 0;
-    left: 0;
-    opacity: 1;
-    border-bottom: 1px solid $bgColor;
-    border-right: 1px solid $bgColor;
-    &::after {
-      font-family: "Font Awesome 5 Free";
-      font-weight: 900;
-      font-size: 0.85rem;
-      content: "\f1f8";
-      line-height: 1.9;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
+    margin-inline: auto;
+    height: auto;
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.13);
+    min-height: 3rem;
+    max-height: 3rem;
+    width: 90%;
+
+    img {
+      min-width: auto;
+      width: 2rem;
       height: 100%;
-      background-color: $textColorDark;
+    }
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    & .delete-btn {
+      transform: translateY(0px);
+      position: absolute;
+      transition-duration: 300ms;
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 100%;
+      overflow: hidden;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 0.5rem;
+      opacity: 1;
+      &::after {
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        font-size: 0.85rem;
+        content: "\f1f8";
+        line-height: 1.9;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: $textColorDark;
+      }
+      &:active::after {
+        background-color: $textColorDarkHover;
+      }
     }
   }
 }

@@ -5,20 +5,17 @@ import { Link } from "react-router-dom";
 
 type Props = {
   info: Result;
-  showDelete: boolean;
 };
 
-const SingleFinished: React.FC<Props> = ({ info, showDelete }) => {
+const SingleFinished: React.FC<Props> = ({ info }) => {
   const {
     id,
     volumeInfo: { imageLinks, title },
   } = info;
   const { handleDelete, isBookDeletedFinished } = useBooks();
-  const slideRef = React.useRef(null);
 
   return (
     <div
-      ref={slideRef}
       className={
         isBookDeletedFinished.includes(id)
           ? "book-collection-single removed"
@@ -26,25 +23,19 @@ const SingleFinished: React.FC<Props> = ({ info, showDelete }) => {
       }
     >
       <button
-        className={`${
-          showDelete || window.innerWidth > 800
-            ? "delete-btn"
-            : "delete-btn off"
-        }`}
-        onClick={(e: any) => {
+        className="delete-btn"
+        onClick={() => {
           handleDelete(id, "Finished");
-
-          setTimeout(() => {
-            e.target.parentElement.parentElement.style.width = "0px";
-            e.target.parentElement.parentElement.style.margin = "0px";
-          }, 500);
         }}
       >
         <p>DELETE</p>
       </button>
 
       <Link to={`/books/${id}`}>
-        <img src={imageLinks.thumbnail} alt="cover" />
+        <img
+          src={imageLinks ? imageLinks.thumbnail : "./images/questionMark.webp"}
+          alt="cover"
+        />
         <p>{title}</p>
       </Link>
     </div>
