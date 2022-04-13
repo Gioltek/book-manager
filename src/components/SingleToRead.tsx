@@ -1,25 +1,20 @@
 import React from "react";
-import { Result } from "../types";
+import { ResultLS } from "../types";
 import { useBooks } from "../BooksContext";
 import { Link } from "react-router-dom";
 
 type Props = {
-  info: Result;
+  info: ResultLS;
 };
 
 const SingleToRead: React.FC<Props> = ({ info }) => {
-  const {
-    id,
-    volumeInfo: { imageLinks, title },
-  } = info;
-  const { handleDelete, isBookDeletedToRead } = useBooks();
-  const slideRef = React.useRef(null);
+  const { bookId, title, img } = info;
+  const { handleDelete, isBookDeletedToRead, isDeleting } = useBooks();
 
   return (
     <div
-      ref={slideRef}
       className={
-        isBookDeletedToRead.includes(id)
+        isBookDeletedToRead.includes(bookId)
           ? "book-collection-single removed"
           : "book-collection-single"
       }
@@ -27,17 +22,15 @@ const SingleToRead: React.FC<Props> = ({ info }) => {
       <button
         className="delete-btn"
         onClick={() => {
-          handleDelete(id, "To Read");
+          handleDelete(bookId, "To Read");
         }}
+        disabled={isDeleting}
       >
         <p>DELETE</p>
       </button>
 
-      <Link to={`/books/${id}`}>
-        <img
-          src={imageLinks ? imageLinks.thumbnail : "./images/questionMark.webp"}
-          alt="cover"
-        />
+      <Link to={`/books/${bookId}`}>
+        <img src={img ? img : "./images/questionMark.webp"} alt="cover" />
         <p>{title}</p>
       </Link>
     </div>

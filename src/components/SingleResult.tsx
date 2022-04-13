@@ -62,7 +62,9 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
         <div className="add-buttons">
           <button
             className={checkActive(id, "READ")}
-            onClick={() => handleButton(id, "To Read", title)}
+            onClick={() =>
+              handleButton(id, "To Read", title, imageLinks?.smallThumbnail)
+            }
           >
             To Read{" "}
             {checkActive(id, "READ") === "active" && (
@@ -71,7 +73,9 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
           </button>
           <button
             className={checkActive(id, "FINISHED")}
-            onClick={() => handleButton(id, "Finished", title)}
+            onClick={() =>
+              handleButton(id, "Finished", title, imageLinks?.smallThumbnail)
+            }
           >
             Finished{" "}
             {checkActive(id, "FINISHED") === "active" && (
@@ -80,7 +84,9 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
           </button>
           <button
             className={checkActive(id, "FAVOURITES")}
-            onClick={() => handleButton(id, "Favourites", title)}
+            onClick={() =>
+              handleButton(id, "Favourites", title, imageLinks?.smallThumbnail)
+            }
           >
             Favourite
             {checkActive(id, "FAVOURITES") === "active" && (

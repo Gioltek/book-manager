@@ -109,16 +109,27 @@ export type Library = {
 };
 
 export type Books = {
-  favourites: string[];
-  finished: string[];
-  toRead: string[];
+  favourites: BookData;
+  finished: BookData;
+  toRead: BookData;
+};
+
+type BookData = {
+  bookId: string;
+  img: string;
+  title: string;
 };
 
 // BOOKS CONTEXT TYPES
 export type BooksContextType = {
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
-  handleButton: (bookId: string, label: string, title: string) => void;
+  handleButton: (
+    bookId: string,
+    label: string,
+    title: string,
+    img: string
+  ) => void;
   checkActive: (bookId: string, label?: string) => string;
   toRead: string[];
   finished: string[];
@@ -130,6 +141,16 @@ export type BooksContextType = {
   isBookDeletedToRead: string[];
   isBookDeletedFinished: string[];
   isBookDeletedFavourites: string[];
+  toReadFetched: ResultLS[];
+  finishedFetched: ResultLS[];
+  favouritesFetched: ResultLS[];
+  isDeleting: boolean;
+};
+
+export type ResultLS = {
+  bookId: string;
+  title: string;
+  img: string;
 };
 
 export type Modal = {
