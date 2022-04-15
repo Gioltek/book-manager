@@ -51,6 +51,7 @@ nav {
   }
 
   a {
+    font-size: 1.35rem;
     transition-duration: 300ms;
     color: $textColorDark;
     &.disabled-link {

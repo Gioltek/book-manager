@@ -36,7 +36,7 @@ const Home = () => {
       >
         <input
           type="text"
-          placeholder="Search a book..."
+          placeholder="Search for a book..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />

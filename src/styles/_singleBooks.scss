@@ -32,7 +32,7 @@
     animation-fill-mode: forwards;
   }
   p {
-    font-size: 0.85rem;
+    font-size: clamp(1rem, 1.25vw, 1.15rem);
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -118,7 +118,6 @@
         transform: translateY(-50%);
       }
     }
-
     img {
       min-width: auto;
       width: 2rem;

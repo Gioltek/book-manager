@@ -35,7 +35,7 @@ const Navbar = () => {
   return (
     <nav>
       <div className="logo">
-        <a href="/">BookManager</a>
+        <a href="/">bookmanager</a>
       </div>
       <div className="links">
         <ul>
