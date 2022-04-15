@@ -20,10 +20,24 @@ const Collection = () => {
 
   const [showMore, setShowMore] = useState("");
 
-  // SET PAGE FOR NAVBAR
+  // Set page for navbar
   useEffect(() => {
     setCurrentPage(window.location.href);
   }, []);
+
+  //? Set max-height for collection sliding animation
+  document.documentElement.style.setProperty(
+    "--maxHeightToRead",
+    `${18.75 + (toReadFetched.length / 4) * 12.5}rem`
+  );
+  document.documentElement.style.setProperty(
+    "--maxHeightFinished",
+    `${18.75 + (finishedFetched.length / 4) * 12.5}rem`
+  );
+  document.documentElement.style.setProperty(
+    "--maxHeightFavourites",
+    `${18.75 + (favouritesFetched.length / 4) * 12.5}rem`
+  );
 
   return (
     <main className="collections-main">
@@ -41,7 +55,9 @@ const Collection = () => {
           </div>
         )}
         <div
-          className={showMore === "To Read" ? "booklist extended" : "booklist"}
+          className={
+            showMore === "To Read" ? "booklist extended to-read" : "booklist"
+          }
         >
           {toReadFetched.map((item: ResultLS) => (
             <SingleToRead key={item.bookId} info={item} />
@@ -81,7 +97,9 @@ const Collection = () => {
           </div>
         )}
         <div
-          className={showMore === "Finished" ? "booklist extended" : "booklist"}
+          className={
+            showMore === "Finished" ? "booklist extended finished" : "booklist"
+          }
         >
           {finishedFetched.map((item: ResultLS) => (
             <SingleFinished key={item.bookId} info={item} />
@@ -121,7 +139,9 @@ const Collection = () => {
         )}
         <div
           className={
-            showMore === "Favourites" ? "booklist extended" : "booklist"
+            showMore === "Favourites"
+              ? "booklist extended favourites"
+              : "booklist"
           }
         >
           {favouritesFetched.map((item: ResultLS) => (

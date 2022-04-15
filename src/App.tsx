@@ -40,15 +40,23 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={isLoggedIn ? <Home /> : <Login label="Home" />}
+            element={isLoggedIn === "TRUE" ? <Home /> : <Login label="Home" />}
           />
           <Route
             path="/profile"
-            element={isLoggedIn ? <Profile /> : <Login label="Profile" />}
+            element={
+              isLoggedIn === "TRUE" ? <Profile /> : <Login label="Profile" />
+            }
           />
           <Route
             path="/collection"
-            element={isLoggedIn ? <Collection /> : <Login label="Collection" />}
+            element={
+              isLoggedIn === "TRUE" ? (
+                <Collection />
+              ) : (
+                <Login label="Collection" />
+              )
+            }
           />
           <Route path="/search/:query" element={<Results />} />
           <Route path="/books/:id" element={<BookPage />} />

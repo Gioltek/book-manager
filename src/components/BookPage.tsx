@@ -9,7 +9,7 @@ const BookPage = () => {
   const query = `https://www.googleapis.com/books/v1/volumes/${id}`;
   const [currentBook, setCurrentBook] = useState<Result>({} as Result);
   const { fetchData } = useFetch();
-  const { setIsLoading, isLoading } = useLogin();
+  const { setIsLoading } = useLogin();
 
   useEffect(() => {
     setIsLoading(true);

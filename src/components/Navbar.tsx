@@ -42,7 +42,13 @@ const Navbar = () => {
           <li>
             <Link
               to="/"
-              className={checkCurrentPage === "home" ? "active-section" : ""}
+              className={
+                checkCurrentPage === "home"
+                  ? "active-section"
+                  : currentUser === null
+                  ? "disabled-link"
+                  : ""
+              }
             >
               home
             </Link>
@@ -51,7 +57,11 @@ const Navbar = () => {
             <a
               href="/collection"
               className={
-                checkCurrentPage === "collection" ? "active-section" : ""
+                checkCurrentPage === "collection"
+                  ? "active-section"
+                  : currentUser === null
+                  ? "disabled-link"
+                  : ""
               }
             >
               collection
@@ -60,7 +70,13 @@ const Navbar = () => {
           <li>
             <Link
               to="/profile"
-              className={checkCurrentPage === "profile" ? "active-section" : ""}
+              className={
+                checkCurrentPage === "profile"
+                  ? "active-section"
+                  : currentUser === null
+                  ? "disabled-link"
+                  : ""
+              }
             >
               <span>
                 profile

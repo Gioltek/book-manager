@@ -53,6 +53,11 @@ nav {
   a {
     transition-duration: 300ms;
     color: $textColorDark;
+    &.disabled-link {
+      filter: saturate(0.5);
+      opacity: 0.6;
+      pointer-events: none;
+    }
     &.active-section {
       font-weight: 400;
       text-decoration: underline;

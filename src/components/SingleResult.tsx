@@ -15,7 +15,7 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
     categories,
   } = volumeInfo;
 
-  const { handleButton, checkActive } = useBooks();
+  const { handleButton, checkActive, disableOthers } = useBooks();
 
   return (
     <>
@@ -65,6 +65,7 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
             onClick={() =>
               handleButton(id, "To Read", title, imageLinks?.smallThumbnail)
             }
+            disabled={disableOthers}
           >
             To Read{" "}
             {checkActive(id, "READ") === "active" && (
@@ -76,6 +77,7 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
             onClick={() =>
               handleButton(id, "Finished", title, imageLinks?.smallThumbnail)
             }
+            disabled={disableOthers}
           >
             Finished{" "}
             {checkActive(id, "FINISHED") === "active" && (
@@ -87,6 +89,7 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
             onClick={() =>
               handleButton(id, "Favourites", title, imageLinks?.smallThumbnail)
             }
+            disabled={disableOthers}
           >
             Favourite
             {checkActive(id, "FAVOURITES") === "active" && (

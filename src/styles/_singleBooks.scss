@@ -112,6 +112,12 @@
     min-height: 3rem;
     max-height: 3rem;
     width: 90%;
+    &:hover {
+      .delete-btn {
+        transition-duration: 0ms;
+        transform: translateY(-50%);
+      }
+    }
 
     img {
       min-width: auto;

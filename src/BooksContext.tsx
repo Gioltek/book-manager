@@ -11,7 +11,7 @@ import {
   BooksContextType,
   Modal,
   ResultLS,
-  Result,
+  BookData,
 } from "./types";
 import { db } from "./firebase";
 import {
@@ -31,9 +31,9 @@ const BooksContext = createContext<BooksContextType>({} as BooksContextType);
 export function BooksProvider({ children }: { children: React.ReactNode }) {
   const [search, setSearch] = useState<string>("");
   const [library, setLibrary] = useState<Library>({} as Library);
-  const [toRead, setToRead] = useState<string[]>([]);
-  const [finished, setFinished] = useState<string[]>([]);
-  const [favourites, setFavourites] = useState<string[]>([]);
+  const [toRead, setToRead] = useState<BookData[]>([]);
+  const [finished, setFinished] = useState<BookData[]>([]);
+  const [favourites, setFavourites] = useState<BookData[]>([]);
   const [triggerDatabase, setTriggerDatabase] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [modal, setModal] = useState<Modal>({} as Modal);
@@ -46,6 +46,7 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
     string[]
   >([]);
   const [isDeleting, setIsDeleting] = useState(false);
+
   // Collection states
   const [toReadFetched, setToReadFetched] = useState<ResultLS[]>(
     (localStorage.getItem("TO READ") &&
@@ -62,7 +63,7 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
       JSON.parse(localStorage.getItem("FAVOURITES") || "")) ||
       []
   );
-  const [isLoading, setIsLoading] = useState(false);
+  const [disableOthers, setDisableOthers] = useState(false);
   const usersCollectionRef = collection(db, "users");
   const skipFirstRender = useRef(true);
   const timeoutRef: { current: NodeJS.Timeout | null } = useRef(null);
@@ -133,17 +134,13 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
       await updateDoc(userDoc, newFields);
       setUpdateLib(updateLib + 1);
     }
-    console.log(Object.keys(library).length);
     if (Object.keys(library).length === 0) {
       // ADD NEW ITEM TO DATABASE
       setBooksToDatabase();
-      // localStorage.setItem("refetch", "TRUE"); // triggers rerender on collection
     } else {
       // MODIFY DATABASE
       updateBooksInDatabase(library.id);
-      // localStorage.setItem("refetch", "TRUE"); // triggers rerender on collection
     }
-    setIsLoading(true);
   }, [triggerDatabase]);
 
   //? COLLECTION FETCHING
@@ -152,59 +149,22 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
     const finishedLS = localStorage.getItem("FINISHED");
     const favouritesLS = localStorage.getItem("FAVOURITES");
 
-    const fetchFromDatabase = async (id: string) => {
-      const url = `https://www.googleapis.com/books/v1/volumes/${id}`;
-      const res = await fetch(url);
-      const data: Result = await res.json();
-      const finalData = {
-        bookId: data.id,
-        img: data.volumeInfo.imageLinks?.smallThumbnail,
-        title: data.volumeInfo.title,
-      };
-      return finalData;
-    };
-
     if (toReadLS) {
       const parsed = JSON.parse(toReadLS);
-      if (parsed[0] === "getFromDatabase" && toRead.length > 0) {
-        const toReadPromises: Promise<ResultLS>[] = toRead.map(async (id) => {
-          const data = await fetchFromDatabase(id);
-          return data;
-        });
-
-        Promise.all(toReadPromises).then((res) =>
-          localStorage.setItem("TO READ", JSON.stringify(res))
-        );
+      if (parsed.length === 0 && toRead.length > 0) {
+        localStorage.setItem("TO READ", JSON.stringify(toRead));
       }
     }
     if (finishedLS) {
       const parsed = JSON.parse(finishedLS);
-      if (parsed[0] === "getFromDatabase" && finished.length > 0) {
-        const finishedPromises: Promise<ResultLS>[] = finished.map(
-          async (id) => {
-            const data = await fetchFromDatabase(id);
-            return data;
-          }
-        );
-
-        Promise.all(finishedPromises).then((res) =>
-          localStorage.setItem("TO READ", JSON.stringify(res))
-        );
+      if (parsed.length === 0 && finished.length > 0) {
+        localStorage.setItem("FINISHED", JSON.stringify(finished));
       }
     }
     if (favouritesLS) {
       const parsed = JSON.parse(favouritesLS);
-      if (parsed[0] === "getFromDatabase" && favourites.length > 0) {
-        const favouritesPromises: Promise<ResultLS>[] = favourites.map(
-          async (id) => {
-            const data = await fetchFromDatabase(id);
-            return data;
-          }
-        );
-
-        Promise.all(favouritesPromises).then((res) =>
-          localStorage.setItem("TO READ", JSON.stringify(res))
-        );
+      if (parsed.length === 0 && favourites.length > 0) {
+        localStorage.setItem("FAVOURITES", JSON.stringify(favourites));
       }
     }
   }, [toRead, finished, favourites]);
@@ -220,91 +180,145 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
     };
   }, [modal]);
 
+  function handleToRead(bookId: string, title: string, img: string) {
+    const toReadLS = localStorage.getItem("TO READ");
+    if (toRead.some((item) => item.bookId === bookId)) {
+      setToRead(toRead.filter((item) => item.bookId !== bookId));
+      setTriggerDatabase(triggerDatabase + 1);
+      if (toReadLS) {
+        const objectLS: ResultLS[] = [...JSON.parse(toReadLS)];
+        localStorage.setItem(
+          "TO READ",
+          JSON.stringify(objectLS.filter((item) => item.bookId !== bookId))
+        );
+        setToReadFetched(objectLS.filter((item) => item.bookId !== bookId));
+      }
+      return;
+    }
+    setToRead([...toRead, { bookId, img, title }]);
+    if (toReadLS) {
+      const objectLS: ResultLS[] = [...JSON.parse(toReadLS)];
+      const newLS = [{ bookId, title, img }, ...objectLS];
+      localStorage.setItem("TO READ", JSON.stringify(newLS));
+      setToReadFetched(newLS);
+    } else {
+      localStorage.setItem("TO READ", JSON.stringify([{ bookId, title, img }]));
+      setToReadFetched([{ bookId, title, img }]);
+    }
+  }
+  function handleFinished(bookId: string, title: string, img: string) {
+    const finishedLS = localStorage.getItem("FINISHED");
+    if (finished.some((item) => item.bookId === bookId)) {
+      setFinished(finished.filter((item) => item.bookId !== bookId));
+      setTriggerDatabase(triggerDatabase + 1);
+      if (finishedLS) {
+        const objectLS: ResultLS[] = [...JSON.parse(finishedLS)];
+        localStorage.setItem(
+          "FINISHED",
+          JSON.stringify(objectLS.filter((item) => item.bookId !== bookId))
+        );
+        setFinishedFetched(objectLS.filter((item) => item.bookId !== bookId));
+      }
+      return;
+    }
+    setFinished([...finished, { bookId, img, title }]);
+    if (finishedLS) {
+      const objectLS: ResultLS[] = [...JSON.parse(finishedLS)];
+      const newLS = [{ bookId, title, img }, ...objectLS];
+      localStorage.setItem("FINISHED", JSON.stringify(newLS));
+      setFinishedFetched(newLS);
+    } else {
+      localStorage.setItem(
+        "FINISHED",
+        JSON.stringify([{ bookId, title, img }])
+      );
+      setFinishedFetched([{ bookId, title, img }]);
+    }
+  }
+
+  function handleFavourites(bookId: string, title: string, img: string) {
+    const favouritesLS = localStorage.getItem("FAVOURITES");
+
+    if (favourites.some((item) => item.bookId === bookId)) {
+      setFavourites(favourites.filter((item) => item.bookId !== bookId));
+      setTriggerDatabase(triggerDatabase + 1);
+      if (favouritesLS) {
+        const objectLS: ResultLS[] = [...JSON.parse(favouritesLS)];
+        localStorage.setItem(
+          "FAVOURITES",
+          JSON.stringify(objectLS.filter((item) => item.bookId !== bookId))
+        );
+        setFavouritesFetched(objectLS.filter((item) => item.bookId !== bookId));
+      }
+      return;
+    }
+    setFavourites([...favourites, { bookId, img, title }]);
+    if (favouritesLS) {
+      const objectLS: ResultLS[] = [...JSON.parse(favouritesLS)];
+      const newLS = [{ bookId, title, img }, ...objectLS];
+      localStorage.setItem("FAVOURITES", JSON.stringify(newLS));
+      setFavouritesFetched(newLS);
+    } else {
+      localStorage.setItem(
+        "FAVOURITES",
+        JSON.stringify([{ bookId, title, img }])
+      );
+      setFavouritesFetched([{ bookId, title, img }]);
+    }
+  }
+
   function handleButton(
     bookId: string,
     label: string,
     title: string,
     img: string
   ) {
-    const toReadLS = localStorage.getItem("TO READ");
-    const finishedLS = localStorage.getItem("FINISHED");
-    const favouritesLS = localStorage.getItem("FAVOURITES");
     if (label === "To Read") {
-      if (toRead.some((item) => item === bookId)) {
-        setToRead(toRead.filter((item) => item !== bookId));
-        setTriggerDatabase(triggerDatabase + 1);
-        if (toReadLS) {
-          const objectLS: ResultLS[] = [...JSON.parse(toReadLS)];
-          localStorage.setItem(
-            "TO READ",
-            JSON.stringify(objectLS.filter((item) => item.bookId !== bookId))
-          );
-          setToReadFetched(objectLS.filter((item) => item.bookId !== bookId));
-        }
-        return;
-      }
-      setToRead([...toRead, bookId]);
-      if (toReadLS) {
-        const objectLS: ResultLS[] = [...JSON.parse(toReadLS)];
-        const newLS = [{ bookId, title, img }, ...objectLS];
-        localStorage.setItem("TO READ", JSON.stringify(newLS));
-        setToReadFetched(newLS);
+      setDisableOthers(true);
+      handleToRead(bookId, title, img);
+      //? Make sure to not bug database
+      if (Object.keys(library).length === 0) {
+        const timeout = setTimeout(() => {
+          clearTimeout(timeout);
+          setDisableOthers(false);
+        }, 500);
       } else {
-        localStorage.setItem(
-          "TO READ",
-          JSON.stringify([{ bookId, title, img }])
-        );
-        setToReadFetched([{ bookId, title, img }]);
+        const timeout = setTimeout(() => {
+          clearTimeout(timeout);
+          setDisableOthers(false);
+        }, 200);
       }
     }
     if (label === "Finished") {
-      if (finished.some((item) => item === bookId)) {
-        setFinished(finished.filter((item) => item !== bookId));
-        setTriggerDatabase(triggerDatabase + 1);
-        if (finishedLS) {
-          const objectLS: ResultLS[] = [...JSON.parse(finishedLS)];
-          localStorage.setItem(
-            "FINISHED",
-            JSON.stringify(objectLS.filter((item) => item.bookId !== bookId))
-          );
-        }
-        return;
-      }
-      setFinished([...finished, bookId]);
-      if (finishedLS) {
-        const objectLS: ResultLS[] = [...JSON.parse(finishedLS)];
-        const newLS = [{ bookId, title, img }, ...objectLS];
-        localStorage.setItem("FINISHED", JSON.stringify(newLS));
+      setDisableOthers(true);
+      handleFinished(bookId, title, img);
+      //? Make sure to not bug database
+      if (Object.keys(library).length === 0) {
+        const timeout = setTimeout(() => {
+          clearTimeout(timeout);
+          setDisableOthers(false);
+        }, 500);
       } else {
-        localStorage.setItem(
-          "FINISHED",
-          JSON.stringify([{ bookId, title, img }])
-        );
+        const timeout = setTimeout(() => {
+          clearTimeout(timeout);
+          setDisableOthers(false);
+        }, 200);
       }
     }
     if (label === "Favourites") {
-      if (favourites.some((item) => item === bookId)) {
-        setFavourites(favourites.filter((item) => item !== bookId));
-        setTriggerDatabase(triggerDatabase + 1);
-        if (favouritesLS) {
-          const objectLS: ResultLS[] = [...JSON.parse(favouritesLS)];
-          localStorage.setItem(
-            "FAVOURITES",
-            JSON.stringify(objectLS.filter((item) => item.bookId !== bookId))
-          );
-        }
-        return;
-      }
-      setFavourites([...favourites, bookId]);
-      if (favouritesLS) {
-        const objectLS: ResultLS[] = [...JSON.parse(favouritesLS)];
-        const newLS = [{ bookId, title, img }, ...objectLS];
-        localStorage.setItem("FAVOURITES", JSON.stringify(newLS));
+      setDisableOthers(true);
+      handleFavourites(bookId, title, img);
+      //? Make sure to not bug database
+      if (Object.keys(library).length === 0) {
+        const timeout = setTimeout(() => {
+          clearTimeout(timeout);
+          setDisableOthers(false);
+        }, 500);
       } else {
-        localStorage.setItem(
-          "FAVOURITES",
-          JSON.stringify([{ bookId, title, img }])
-        );
+        const timeout = setTimeout(() => {
+          clearTimeout(timeout);
+          setDisableOthers(false);
+        }, 200);
       }
     }
 
@@ -332,8 +346,8 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
     const finishedLS = localStorage.getItem("FINISHED");
     const favouritesLS = localStorage.getItem("FAVOURITES");
     if (label === "To Read") {
-      if (toRead.some((item) => item === bookId)) {
-        setToRead(toRead.filter((item) => item !== bookId));
+      if (toRead.some((item) => item.bookId === bookId)) {
+        setToRead(toRead.filter((item) => item.bookId !== bookId));
         setTriggerDatabase(triggerDatabase + 1);
         setIsBookDeletedToRead([...isBookDeletedToRead, bookId]);
       }
@@ -352,8 +366,8 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
       }
       return;
     } else if (label === "Finished") {
-      if (finished.some((item) => item === bookId)) {
-        setFinished(finished.filter((item) => item !== bookId));
+      if (finished.some((item) => item.bookId === bookId)) {
+        setFinished(finished.filter((item) => item.bookId !== bookId));
         setTriggerDatabase(triggerDatabase + 1);
         setIsBookDeletedFinished([...isBookDeletedFinished, bookId]);
       }
@@ -375,8 +389,8 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
       }
       return;
     } else if (label === "Favourites") {
-      if (favourites.some((item) => item === bookId)) {
-        setFavourites(favourites.filter((item) => item !== bookId));
+      if (favourites.some((item) => item.bookId === bookId)) {
+        setFavourites(favourites.filter((item) => item.bookId !== bookId));
         setTriggerDatabase(triggerDatabase + 1);
         setIsBookDeletedFavourites([...isBookDeletedFavourites, bookId]);
       }
@@ -403,13 +417,19 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
   }
 
   function checkActive(bookId: string, label?: string) {
-    if (toRead.some((item) => item === bookId) && label === "READ") {
+    if (toRead.some((item) => item.bookId === bookId) && label === "READ") {
       return "active";
     }
-    if (finished.some((item) => item === bookId) && label === "FINISHED") {
+    if (
+      finished.some((item) => item.bookId === bookId) &&
+      label === "FINISHED"
+    ) {
       return "active";
     }
-    if (favourites.some((item) => item === bookId) && label === "FAVOURITES") {
+    if (
+      favourites.some((item) => item.bookId === bookId) &&
+      label === "FAVOURITES"
+    ) {
       return "active";
     } else return "not-active";
   }
@@ -433,6 +453,7 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
     finishedFetched,
     favouritesFetched,
     isDeleting,
+    disableOthers,
   };
 
   return (

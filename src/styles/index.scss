@@ -17,6 +17,29 @@
 @import "_buttonPopup";
 @import "_singleBooks";
 @import "_profile";
+@import "_errorPage.scss";
+
+html {
+  scrollbar-color: hsl(203, 68%, 19%) transparent;
+  scrollbar-width: thin;
+  overflow: overlay;
+  &::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: hsla(205, 53%, 19%, 0.7);
+    border-radius: 1rem;
+    transition-duration: 300ms;
+
+    &:hover {
+      background-color: hsla(204, 68%, 21%, 0.9);
+    }
+    &:active {
+      background-color: hsla(204, 68%, 21%);
+    }
+  }
+}
 
 body {
   height: 100vh;

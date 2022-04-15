@@ -17,9 +17,9 @@ const Login: React.FC<Props> = ({ label }) => {
         setCurrentUser(JSON.parse(localStorage.getItem("user") || ""));
         localStorage.setItem("isLoggedIn?", "TRUE");
         setIsLoggedIn(localStorage.getItem("isLoggedIn?"));
-        localStorage.setItem("TO READ", JSON.stringify(["getFromDatabase"]));
-        localStorage.setItem("FINISHED", JSON.stringify(["getFromDatabase"]));
-        localStorage.setItem("FAVOURITES", JSON.stringify(["getFromDatabase"]));
+        localStorage.setItem("TO READ", JSON.stringify([]));
+        localStorage.setItem("FINISHED", JSON.stringify([]));
+        localStorage.setItem("FAVOURITES", JSON.stringify([]));
         setIsLoading(false);
         window.location.reload();
       })
