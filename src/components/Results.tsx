@@ -27,6 +27,7 @@ const Results = () => {
     } else {
       alert("Please, write something in the form");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
   return (
     <>
