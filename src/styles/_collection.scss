@@ -62,7 +62,7 @@
   overflow: hidden;
   transition: max-height 1200ms;
   transition-timing-function: cubic-bezier(0, 0.93, 1, 1);
-  justify-content: start;
+  justify-content: flex-start;
   overflow-y: auto;
   scrollbar-color: hsla(204, 59%, 47%, 0.3) transparent;
   scrollbar-width: thin;

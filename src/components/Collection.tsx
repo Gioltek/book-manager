@@ -23,7 +23,7 @@ const Collection = () => {
   // Set page for navbar
   useEffect(() => {
     setCurrentPage(window.location.href);
-  }, []);
+  }, [setCurrentPage]);
 
   //? Set max-height for collection sliding animation
   document.documentElement.style.setProperty(

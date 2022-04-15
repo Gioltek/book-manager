@@ -102,6 +102,7 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
       }
     }
     getUsersBooks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateLib]);
 
   //? DATABASE
@@ -141,6 +142,7 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
       // MODIFY DATABASE
       updateBooksInDatabase(library.id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [triggerDatabase]);
 
   //? COLLECTION FETCHING

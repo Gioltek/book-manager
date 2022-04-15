@@ -8,7 +8,7 @@ const Home = () => {
 
   React.useEffect(() => {
     setCurrentPage(window.location.href);
-  }, []);
+  }, [setCurrentPage]);
 
   return (
     <main className="home-main">

@@ -4,7 +4,7 @@ const Profile = () => {
   const { logout, currentUser, setCurrentPage } = useLogin();
   React.useEffect(() => {
     setCurrentPage(window.location.href);
-  }, []);
+  }, [setCurrentPage]);
 
   return (
     <main className="profile-main">
