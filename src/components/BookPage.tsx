@@ -77,7 +77,13 @@ const BookPage = () => {
         {<p>{maturityRating !== "NOT_MATURE" && <strong>18+</strong>}</p>}
         <p>
           <strong>{t("googlePage")}: </strong>
-          {previewLink ? <a href={previewLink}>Click here</a> : "Unknown"}
+          {previewLink ? (
+            <a href={previewLink} target="_blank" rel="noopener noreferrer">
+              Click here
+            </a>
+          ) : (
+            "Unknown"
+          )}
         </p>
       </div>
     </article>

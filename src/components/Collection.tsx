@@ -134,7 +134,7 @@ const Collection = () => {
       <div className="books-container">
         <h2>
           <Trans i18nKey="favBooks">
-            <span>Favourite </span>Books
+            <span>Favourite</span>Books
           </Trans>
         </h2>
         <div className="underline"></div>
