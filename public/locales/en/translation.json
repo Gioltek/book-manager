@@ -1,0 +1,41 @@
+{
+  "welcome": "Welcome",
+  "placeholder": "Search for a book...",
+  "search": "Search",
+  "author": "Author/s",
+  "pages": "Pages",
+  "language": "Language",
+  "publishingDate": "Publishing Date",
+  "categories": "Categories",
+  "publisher": "Publisher",
+  "googlePage": "Google Books Page",
+  "collection": "collection",
+  "profile": "profile",
+  "toRead": "To Read",
+  "finished": "Finished",
+  "favourites": "Favourites",
+  "buttonPopup": "\"{{title}}\" has been added to the \"{{label}}\" collection",
+  "popupLabel": {
+    "To Read": "To Read",
+    "Finished": "Finished",
+    "Favourites": "Favourites"
+  },
+  "yourCollection": "Your Collection",
+  "books": "Books",
+  "noBooks": "You have not added any book in this collection yet.",
+  "startResearch": "Start your research",
+  "finBooks": "Finished <0>Books</0>",
+  "favBooks": "Favourite <0>Books</0>",
+  "noPage": "It seems like this page doesn't exist.",
+  "backToHome": "Go back to the",
+  "googleLogin": "Log in with Google",
+  "mustLogin": "In order to access the {{label}} tab you need to be logged in.",
+  "navbarLabel": {
+    "Home": "Home",
+    "Collection": "Collection",
+    "Profile": "Profile"
+  },
+  "alertWriteSomething": "Please, write something in the form",
+  "title": "Title",
+  "delete": "DELETE"
+}

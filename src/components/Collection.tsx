@@ -7,6 +7,7 @@ import SingleFinished from "./SingleFinished";
 
 import { useBooks } from "../BooksContext";
 import { useLogin } from "../LoginContext";
+import { useTranslation, Trans } from "react-i18next";
 import { ResultLS } from "../types";
 
 // ICONS
@@ -17,6 +18,7 @@ import { faAngleUp } from "@fortawesome/free-solid-svg-icons/faAngleUp";
 const Collection = () => {
   const { toReadFetched, finishedFetched, favouritesFetched } = useBooks();
   const { setCurrentPage } = useLogin();
+  const { t } = useTranslation();
 
   const [showMore, setShowMore] = useState("");
 
@@ -41,17 +43,18 @@ const Collection = () => {
 
   return (
     <main className="collections-main">
-      <h1>Your Collection</h1>
+      <h1>{t("yourCollection")}</h1>
 
       <div className="books-container">
         <h2>
-          Books<span> To Read</span>
+          {t("books")}
+          <span> {t("toRead")}</span>
         </h2>
         <div className="underline"></div>
         {toReadFetched.length < 1 && (
           <div className="default-no-books">
-            <p>You have not added any book in this collection yet.</p>
-            <Link to="/">Start your research</Link>
+            <p>{t("noBooks")}</p>
+            <Link to="/">{t("startResearch")}</Link>
           </div>
         )}
         <div
@@ -87,13 +90,15 @@ const Collection = () => {
 
       <div className="books-container">
         <h2>
-          <span>Finished </span>Books
+          <Trans i18nKey="finBooks">
+            <span>Finished </span>Books
+          </Trans>
         </h2>
         <div className="underline"></div>
         {finishedFetched.length < 1 && (
           <div className="default-no-books">
-            <p>You have not added any book in this collection yet.</p>
-            <Link to="/">Start your research</Link>
+            <p>{t("noBooks")}</p>
+            <Link to="/">{t("startResearch")}</Link>
           </div>
         )}
         <div
@@ -128,13 +133,15 @@ const Collection = () => {
 
       <div className="books-container">
         <h2>
-          <span>Favourite </span>Books
+          <Trans i18nKey="favBooks">
+            <span>Favourite </span>Books
+          </Trans>
         </h2>
         <div className="underline"></div>
         {favouritesFetched.length < 1 && (
           <div className="default-no-books">
-            <p>You have not added any book in this collection yet.</p>
-            <Link to="/">Start your research</Link>
+            <p>{t("noBooks")}</p>
+            <Link to="/">{t("startResearch")}</Link>
           </div>
         )}
         <div

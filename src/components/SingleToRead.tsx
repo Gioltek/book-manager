@@ -2,6 +2,7 @@ import React from "react";
 import { ResultLS } from "../types";
 import { useBooks } from "../BooksContext";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   info: ResultLS;
@@ -10,6 +11,7 @@ type Props = {
 const SingleToRead: React.FC<Props> = ({ info }) => {
   const { bookId, title, img } = info;
   const { handleDelete, isBookDeletedToRead, isDeleting } = useBooks();
+  const { t } = useTranslation();
 
   return (
     <div
@@ -26,7 +28,7 @@ const SingleToRead: React.FC<Props> = ({ info }) => {
         }}
         disabled={isDeleting}
       >
-        <p>DELETE</p>
+        <p>{t("delete")}</p>
       </button>
 
       <Link to={`/books/${bookId}`}>

@@ -1,0 +1,41 @@
+{
+  "welcome": "Benvenuto",
+  "placeholder": "Cerca un libro...",
+  "search": "Cerca",
+  "author": "Autore/i",
+  "pages": "Pagine",
+  "language": "Lingua",
+  "publishingDate": "Anno di Pubblicazione",
+  "categories": "Categorie",
+  "publisher": "Editore",
+  "googlePage": "Pagina di Google Books",
+  "collection": "collezione",
+  "profile": "profilo",
+  "toRead": "Da leggere",
+  "finished": "Finiti",
+  "favourites": "Preferiti",
+  "buttonPopup": "\"{{title}}\" è stato aggiunto alla collezione \"{{label}}\"",
+  "popupLabel": {
+    "To Read": "Da Leggere",
+    "Finished": "Finiti",
+    "Favourites": "Preferiti"
+  },
+  "yourCollection": "La tua Collezione",
+  "books": "Libri",
+  "noBooks": "Non hai ancora aggiunto alcun libro alla collezione.",
+  "startResearch": "Comincia a cercare",
+  "finBooks": "<0>Libri</0> Finiti",
+  "favBooks": "<0>Libri</0> Preferiti",
+  "noPage": "Sembra che questa pagina non esista.",
+  "backToHome": "Torna alla",
+  "googleLogin": "Accedi con Google",
+  "mustLogin": "Per entrare nella sezione \"{{label}}\" devi prima effettuare l'accesso.",
+  "navbarLabel": {
+    "Home": "Home",
+    "Collection": "Collezione",
+    "Profile": "Profilo"
+  },
+  "alertWriteSomething": "Inserisci un input valido nella casella di testo",
+  "title": "Titolo",
+  "delete": "CANCELLA"
+}

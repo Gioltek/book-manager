@@ -132,6 +132,8 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
         },
       };
       const userDoc = doc(db, "users", id);
+      console.log(userDoc);
+
       await updateDoc(userDoc, newFields);
       setUpdateLib(updateLib + 1);
     }
@@ -182,7 +184,30 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
     };
   }, [modal]);
 
-  function handleToRead(bookId: string, title: string, img: string) {
+  function checkModal(title: string, label: string) {
+    if (!showModal) {
+      setModal({
+        title,
+        label,
+      });
+      setShowModal(true);
+    } else {
+      setShowModal(false);
+      clearTimeout(timeoutRef.current as NodeJS.Timeout);
+      setModal({
+        title,
+        label,
+      });
+      setShowModal(true);
+    }
+  }
+
+  function handleToRead(
+    bookId: string,
+    label: string,
+    title: string,
+    img: string
+  ) {
     const toReadLS = localStorage.getItem("TO READ");
     if (toRead.some((item) => item.bookId === bookId)) {
       setToRead(toRead.filter((item) => item.bookId !== bookId));
@@ -207,8 +232,15 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem("TO READ", JSON.stringify([{ bookId, title, img }]));
       setToReadFetched([{ bookId, title, img }]);
     }
+    checkModal(title, label);
   }
-  function handleFinished(bookId: string, title: string, img: string) {
+
+  function handleFinished(
+    bookId: string,
+    label: string,
+    title: string,
+    img: string
+  ) {
     const finishedLS = localStorage.getItem("FINISHED");
     if (finished.some((item) => item.bookId === bookId)) {
       setFinished(finished.filter((item) => item.bookId !== bookId));
@@ -236,9 +268,15 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
       );
       setFinishedFetched([{ bookId, title, img }]);
     }
+    checkModal(title, label);
   }
 
-  function handleFavourites(bookId: string, title: string, img: string) {
+  function handleFavourites(
+    bookId: string,
+    label: string,
+    title: string,
+    img: string
+  ) {
     const favouritesLS = localStorage.getItem("FAVOURITES");
 
     if (favourites.some((item) => item.bookId === bookId)) {
@@ -267,6 +305,7 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
       );
       setFavouritesFetched([{ bookId, title, img }]);
     }
+    checkModal(title, label);
   }
 
   function handleButton(
@@ -277,7 +316,7 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
   ) {
     if (label === "To Read") {
       setDisableOthers(true);
-      handleToRead(bookId, title, img);
+      handleToRead(bookId, label, title, img);
       //? Make sure to not bug database
       if (Object.keys(library).length === 0) {
         const timeout = setTimeout(() => {
@@ -293,7 +332,7 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
     }
     if (label === "Finished") {
       setDisableOthers(true);
-      handleFinished(bookId, title, img);
+      handleFinished(bookId, label, title, img);
       //? Make sure to not bug database
       if (Object.keys(library).length === 0) {
         const timeout = setTimeout(() => {
@@ -309,7 +348,7 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
     }
     if (label === "Favourites") {
       setDisableOthers(true);
-      handleFavourites(bookId, title, img);
+      handleFavourites(bookId, label, title, img);
       //? Make sure to not bug database
       if (Object.keys(library).length === 0) {
         const timeout = setTimeout(() => {
@@ -323,23 +362,6 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
         }, 200);
       }
     }
-
-    if (!showModal) {
-      setModal({
-        title,
-        label,
-      });
-      setShowModal(true);
-    } else {
-      setShowModal(false);
-      clearTimeout(timeoutRef.current as NodeJS.Timeout);
-      setModal({
-        title,
-        label,
-      });
-      setShowModal(true);
-    }
-
     setTriggerDatabase(triggerDatabase + 1);
   }
 

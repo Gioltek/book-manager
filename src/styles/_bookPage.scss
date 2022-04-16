@@ -37,8 +37,9 @@
     &:hover {
       color: $lightColorHover;
     }
-    &:active {
+    &:focus-visible {
       color: $lightColorHover;
+      outline: 2px solid $lightColorHover;
     }
   }
 }

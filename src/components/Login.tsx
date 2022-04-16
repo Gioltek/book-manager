@@ -1,6 +1,7 @@
 import React from "react";
 import { signInWithGoogle } from "../firebase";
 import { useLogin } from "../LoginContext";
+import { useTranslation, Trans } from "react-i18next";
 
 type Props = {
   label: string;
@@ -8,6 +9,7 @@ type Props = {
 
 const Login: React.FC<Props> = ({ label }) => {
   const { setCurrentUser, setIsLoggedIn, setIsLoading } = useLogin();
+  const { t } = useTranslation();
 
   function handleLogin(): void {
     setIsLoading(true);
@@ -31,10 +33,14 @@ const Login: React.FC<Props> = ({ label }) => {
 
   return (
     <div className="login-container">
-      <p>In order to access the {label} tab you need to be logged in.</p>
+      <p>
+        {t("mustLogin", {
+          label: t(`navbarLabel.${label}`),
+        })}
+      </p>
       <button onClick={handleLogin} className="google-login">
-        <img src="images/google-logo.png" alt="google login" /> Sign in with
-        Google
+        <img src="images/google-logo.png" alt="google login" />
+        {t("googleLogin")}
       </button>
     </div>
   );

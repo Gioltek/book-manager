@@ -1,10 +1,12 @@
 import React from "react";
 import { useLogin } from "../LoginContext";
 import { useBooks } from "../BooksContext";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
   const { currentUser, setCurrentPage } = useLogin();
   const { search, setSearch } = useBooks();
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     setCurrentPage(window.location.href);
@@ -14,7 +16,7 @@ const Home = () => {
     <main className="home-main">
       <section className="welcome">
         <h1>
-          Welcome {""}
+          {t("welcome")} {""}
           <span className="accentText">
             {currentUser && currentUser.user.displayName}
           </span>
@@ -28,7 +30,7 @@ const Home = () => {
         onSubmit={(e) => {
           e.preventDefault();
           if (!search.replace(/\s/g, "").length) {
-            alert("oh");
+            alert(t("alertWriteSomething"));
           } else {
             window.location.href = `/search/${encodeURIComponent(search)}`;
           }
@@ -36,11 +38,11 @@ const Home = () => {
       >
         <input
           type="text"
-          placeholder="Search for a book..."
+          placeholder={t("placeholder")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <button type="submit">Search</button>
+        <button type="submit">{t("search")}</button>
       </form>
     </main>
   );

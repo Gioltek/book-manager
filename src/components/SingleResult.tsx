@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useBooks } from "../BooksContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
+import { useTranslation } from "react-i18next";
 const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
   const {
     title,
@@ -16,6 +17,7 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
   } = volumeInfo;
 
   const { handleButton, checkActive, disableOthers } = useBooks();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -27,11 +29,11 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
         )}
         <div className="info-container">
           <p>
-            <strong>Title: </strong>
+            <strong>{t("title")}: </strong>
             <Link to={`/books/${id}`}>{title}</Link>
           </p>
           <p>
-            <strong>Author: </strong>
+            <strong>{t("author")}: </strong>
             {authors
               ? authors.map((author, i, array) => {
                   if (array.length - 1 === i) {
@@ -43,19 +45,19 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
               : "Unknown"}
           </p>
           <p>
-            <strong>Pages: </strong>
+            <strong>{t("pages")}: </strong>
             {pageCount ? pageCount : "Unknown"}
           </p>
           <p>
-            <strong>Language: </strong>
+            <strong>{t("language")}: </strong>
             {language ? language.toUpperCase() : "Unknown"}
           </p>
           <p>
-            <strong>Publishing Date: </strong>
+            <strong>{t("publishingDate")}: </strong>
             {publishedDate ? publishedDate.slice(0, 4) : "Unknown"}
           </p>
           <p>
-            <strong>Categories: </strong>
+            <strong>{t("categories")}: </strong>
             {categories ? categories.map((category) => category) : "Unknown"}
           </p>
         </div>
@@ -67,7 +69,7 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
             }
             disabled={disableOthers}
           >
-            To Read{" "}
+            {t("toRead")}{" "}
             {checkActive(id, "READ") === "active" && (
               <FontAwesomeIcon icon={faCheck} />
             )}
@@ -79,7 +81,7 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
             }
             disabled={disableOthers}
           >
-            Finished{" "}
+            {t("finished")}{" "}
             {checkActive(id, "FINISHED") === "active" && (
               <FontAwesomeIcon icon={faCheck} />
             )}
@@ -91,7 +93,7 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
             }
             disabled={disableOthers}
           >
-            Favourite
+            {t("favourites")}
             {checkActive(id, "FAVOURITES") === "active" && (
               <FontAwesomeIcon icon={faCheck} />
             )}

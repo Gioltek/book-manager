@@ -1,10 +1,14 @@
+import { useTranslation } from "react-i18next";
+
 const ErrorPage = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="error-section">
       <h2 className="accentText">Ooops!</h2>
-      <p>It seems like this page doesn't exist.</p>
+      <p>{t("noPage")}</p>
       <p>
-        Go back to the <a href="/">homepage</a>.
+        {t("backToHome")} <a href="/">homepage</a>.
       </p>
     </section>
   );

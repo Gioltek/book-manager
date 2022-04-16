@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Result } from "../types";
 import { useFetch } from "../useFetch";
 import { useLogin } from "../LoginContext";
+import { useTranslation } from "react-i18next";
 
 const BookPage = () => {
   const { id } = useParams();
@@ -10,6 +11,7 @@ const BookPage = () => {
   const [currentBook, setCurrentBook] = useState<Result>({} as Result);
   const { fetchData } = useFetch();
   const { setIsLoading } = useLogin();
+  const { t } = useTranslation();
 
   useEffect(() => {
     setIsLoading(true);
@@ -49,32 +51,32 @@ const BookPage = () => {
       )}
       <div className="book-page-info">
         <p>
-          <strong>Author: </strong>
+          <strong>{t("author")}: </strong>
           {authors ? authors.map((author) => author) : "Unknown"}
         </p>
         <p>
-          <strong>Pages: </strong>
+          <strong>{t("pages")}: </strong>
           {pageCount ? pageCount : "Unknown"}
         </p>
         <p>
-          <strong>Language: </strong>
+          <strong>{t("language")}: </strong>
           {language ? language.toUpperCase() : "Unknown"}
         </p>
         <p>
-          <strong>Publishing Date: </strong>
+          <strong>{t("publishingDate")}: </strong>
           {publishedDate ? publishedDate.slice(0, 4) : "Unknown"}
         </p>
         <p>
-          <strong>Categories: </strong>
+          <strong>{t("categories")}: </strong>
           {categories ? categories.map((category) => category) : "Unknown"}
         </p>
         <p>
-          <strong>Publisher: </strong>
+          <strong>{t("publisher")}: </strong>
           {publisher ? publisher : "Unknown"}
         </p>
         {<p>{maturityRating !== "NOT_MATURE" && <strong>18+</strong>}</p>}
         <p>
-          <strong>Google Books Page: </strong>
+          <strong>{t("googlePage")}: </strong>
           {previewLink ? <a href={previewLink}>Click here</a> : "Unknown"}
         </p>
       </div>

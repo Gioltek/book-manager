@@ -2,10 +2,11 @@
 @import url("https://use.fontawesome.com/releases/v5.13.0/css/all.css");
 
 .book-collection-single {
-  flex: 0 0 19%;
+  flex: 0 0 18%;
   position: relative;
   height: 12rem;
   min-width: 7rem;
+  width: 7rem;
   margin: 0.5rem auto;
   transition-duration: 300ms;
   overflow: hidden;
@@ -41,6 +42,7 @@
 
   a {
     color: $textColorDark;
+    max-width: 7rem;
     &:hover {
       text-decoration: underline;
     }
@@ -61,6 +63,12 @@
     cursor: pointer;
     border-radius: 3px 3px 0 0;
     transform: translateY(-30px);
+    &:focus-visible {
+      opacity: 1;
+      transform: translateY(0px);
+      width: 6.85rem;
+      border-radius: 3px 3px 0 0;
+    }
     &.off {
       display: none;
     }

@@ -5,6 +5,33 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 0.25rem 1rem;
+  .languages {
+    cursor: default;
+    pointer-events: none;
+    user-select: none;
+    --webkit-user-select: none;
+    button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      pointer-events: all;
+      font-size: 1.35rem;
+      transition-duration: 300ms;
+      color: $textColorDark;
+      &:hover {
+        color: $textColorDarkHover;
+        text-decoration: underline;
+      }
+      &:focus-visible {
+        color: $textColorDarkHover;
+        outline: none;
+        text-decoration: underline;
+      }
+      &.active {
+        font-weight: 400;
+      }
+    }
+  }
 }
 
 .menu {
@@ -86,7 +113,7 @@ nav {
   img {
     width: 2.25rem;
     border-radius: 100%;
-    margin-left: 0.35rem;
+    margin: 0 0.35rem;
   }
   span:hover img {
     animation-name: imageBounce;
@@ -147,17 +174,38 @@ nav {
       margin-bottom: 5rem;
     }
     a {
-      color: $textColorDark;
+      color: $lightColor;
+      transition-duration: 300ms;
       &.active-section {
         text-decoration: underline;
+        color: $textColorDark;
+        &:hover {
+          color: $textColorDarkHover;
+        }
+      }
+      &:hover {
+        color: $lightColorHover;
+      }
+      &:active {
+        color: $textColorDarkHover;
+      }
+    }
+    .languages {
+      button {
+        font-size: inherit;
+        text-transform: uppercase;
+        font-weight: 300;
         color: $lightColor;
-        transition-duration: 300ms;
         &:hover {
           color: $lightColorHover;
         }
-      }
-      &:active {
-        color: $textColorDarkActive;
+        &:active {
+          color: $lightColorHover;
+        }
+        &.active {
+          font-weight: 800;
+          color: $textColorDark;
+        }
       }
     }
   }

@@ -4,10 +4,12 @@ import { useParams } from "react-router-dom";
 import { Results as ResultsType } from "../types";
 import SingleResult from "./SingleResult";
 import Home from "./Home";
+import { useTranslation } from "react-i18next";
 
 const Results = () => {
   const { fetchData } = useFetch();
   const { query } = useParams();
+  const { t } = useTranslation();
 
   const queryUrl =
     query &&
@@ -25,7 +27,7 @@ const Results = () => {
         setShowResults(true);
       });
     } else {
-      alert("Please, write something in the form");
+      alert(t("alertWriteSomething"));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);

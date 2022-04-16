@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLogin } from "../LoginContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
+import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
   const { currentUser, currentPage } = useLogin();
   const [menu, setMenu] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [checkCurrentPage, setCheckCurrentPage] = useState("");
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     function checkPage() {
@@ -64,7 +66,7 @@ const Navbar = () => {
                   : ""
               }
             >
-              collection
+              {t("collection")}
             </a>
           </li>
           <li>
@@ -79,10 +81,31 @@ const Navbar = () => {
               }
             >
               <span>
-                profile
+                {t("profile")}
                 <img src={currentUser?.user.photoURL} alt="profile" />
               </span>
             </Link>
+          </li>
+          <li>
+            <div className="languages">
+              <button
+                className={i18n.language === "en" ? "active" : ""}
+                onClick={() => i18n.changeLanguage("en")}
+              >
+                en
+              </button>
+              /
+              <button
+                className={
+                  i18n.language === "it-IT" || i18n.language === "it"
+                    ? "active"
+                    : ""
+                }
+                onClick={() => i18n.changeLanguage("it")}
+              >
+                it
+              </button>
+            </div>
           </li>
         </ul>
       </div>
@@ -121,7 +144,7 @@ const Navbar = () => {
               }
               onClick={() => setMenu(false)}
             >
-              collection
+              {t("collection")}
             </a>
           </li>
           <li>
@@ -130,8 +153,35 @@ const Navbar = () => {
               className={checkCurrentPage === "profile" ? "active-section" : ""}
               onClick={() => setMenu(false)}
             >
-              profile
+              {t("profile")}
             </Link>
+          </li>
+          <li>
+            <div className="languages">
+              <button
+                className={i18n.language === "en" ? "active" : ""}
+                onClick={() => {
+                  i18n.changeLanguage("en");
+                  setMenu(false);
+                }}
+              >
+                en
+              </button>
+              /
+              <button
+                className={
+                  i18n.language === "it-IT" || i18n.language === "it"
+                    ? "active"
+                    : ""
+                }
+                onClick={() => {
+                  i18n.changeLanguage("it");
+                  setMenu(false);
+                }}
+              >
+                it
+              </button>
+            </div>
           </li>
         </ul>
       </div>

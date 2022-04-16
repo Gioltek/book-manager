@@ -13,6 +13,7 @@
   h1 {
     line-height: 1;
     font-size: 1.75rem;
+    text-transform: capitalize;
   }
   .underline {
     margin-bottom: 1rem;
@@ -26,6 +27,10 @@
     transition-duration: 300ms;
     &:hover {
       color: $lightColorHover;
+    }
+    &:focus-visible {
+      color: $lightColorHover;
+      outline: 2px solid $lightColorHover;
     }
   }
   .username {
