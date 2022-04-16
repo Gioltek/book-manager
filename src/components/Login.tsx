@@ -1,7 +1,7 @@
 import React from "react";
 import { signInWithGoogle } from "../firebase";
 import { useLogin } from "../LoginContext";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   label: string;
