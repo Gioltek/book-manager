@@ -1,5 +1,6 @@
 {
   "welcome": "Welcome",
+  "guest": "Guest",
   "placeholder": "Search for a book...",
   "search": "Search",
   "author": "Author/s",
@@ -29,7 +30,15 @@
   "noPage": "It seems like this page doesn't exist.",
   "backToHome": "Go back to the",
   "googleLogin": "Log in with Google",
+  "orGuest": "...or click here to continue as a guest",
+  "guestLine1": "You may lose your collection if you don't log-in with Google!",
+  "guestLine2": "Do you still wish to continue?",
+  "guestBtn1": "Yes, I want to continue.",
+  "guestBtn2": "No, go back.",
   "mustLogin": "In order to access the {{label}} tab you need to be logged in.",
+  "logoutLine": "You will lose all your collections after the logout. If you want to keep them even after you logout, you will need to log-in with Google.",
+  "guestProfile1": "No information available for this user.",
+  "guestProfile2": "Login with Google to view your Profile.",
   "navbarLabel": {
     "Home": "Home",
     "Collection": "Collection",

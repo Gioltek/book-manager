@@ -17,6 +17,10 @@ export function LoginProvider({ children }: { children: React.ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState<string | null>(
     localStorage.getItem("isLoggedIn?")
   );
+  const [guest, setGuest] = useState<string | null>(
+    (localStorage.getItem("guest") && (localStorage.getItem("user") || "")) ||
+      null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState("");
 
@@ -39,6 +43,8 @@ export function LoginProvider({ children }: { children: React.ReactNode }) {
     logout,
     currentPage,
     setCurrentPage,
+    guest,
+    setGuest,
   };
 
   return (

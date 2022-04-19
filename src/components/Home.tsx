@@ -18,7 +18,7 @@ const Home = () => {
         <h1>
           {t("welcome")} {""}
           <span className="accentText">
-            {currentUser && currentUser.user.displayName}
+            {currentUser ? currentUser.user.displayName : t("guest")}
           </span>
           !
         </h1>

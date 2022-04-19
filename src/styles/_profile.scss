@@ -19,12 +19,13 @@
     margin-bottom: 1rem;
     margin-top: 1rem;
   }
-  a {
+  .logout-link {
     color: $lightColor;
     font-weight: 500;
     margin-top: 1rem;
     font-size: 1.2rem;
     transition-duration: 300ms;
+    cursor: pointer;
     &:hover {
       color: $lightColorHover;
     }
@@ -39,5 +40,56 @@
   }
   p {
     word-wrap: break-word;
+  }
+  .no-profile {
+    text-align: center;
+  }
+}
+
+//? GUEST MODE
+.logout-modal {
+  background-color: rgba(0, 0, 0, 0.64);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1009;
+  line-height: 1.25;
+  &.off {
+    display: none;
+  }
+  .modal-content {
+    background-color: white;
+    padding: 1rem;
+    width: 90%;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 30rem;
+    p {
+      text-align: center;
+    }
+    .modal-btns {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+    }
+    button {
+      cursor: pointer;
+      background-color: $textColorDark;
+      border: 0;
+      border-radius: 3px;
+      color: $bgColor;
+      padding: 0.25rem 0.35rem;
+      a {
+        color: $bgColor;
+      }
+    }
   }
 }

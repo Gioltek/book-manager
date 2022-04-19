@@ -7,7 +7,7 @@ const Loading = () => {
     top:50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 101;
+    z-index: 9999;
     animation: opacityAnimation 1000ms;
     animation-iteration-count: infinite;
   `;

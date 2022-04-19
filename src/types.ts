@@ -79,6 +79,8 @@ export type LoginContextType = {
   logout: () => void;
   currentPage: string;
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
+  guest: string | null;
+  setGuest: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export type CurrentUser = {

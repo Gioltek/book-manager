@@ -95,7 +95,8 @@ strong {
       background-color: $textColorDark;
       display: flex;
       align-items: center;
-      justify-content: space-evenly;
+      justify-content: center;
+      gap: 0.35rem;
 
       &:hover {
         background-color: $textColorDarkHover;

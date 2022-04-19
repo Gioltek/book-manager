@@ -176,6 +176,11 @@ nav {
     a {
       color: $lightColor;
       transition-duration: 300ms;
+      &.disabled-link {
+        filter: saturate(0.5);
+        opacity: 0.6;
+        pointer-events: none;
+      }
       &.active-section {
         text-decoration: underline;
         color: $textColorDark;

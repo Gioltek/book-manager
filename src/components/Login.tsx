@@ -8,7 +8,8 @@ type Props = {
 };
 
 const Login: React.FC<Props> = ({ label }) => {
-  const { setCurrentUser, setIsLoggedIn, setIsLoading } = useLogin();
+  const { setCurrentUser, setIsLoggedIn, setIsLoading, setGuest } = useLogin();
+  const [modal, setModal] = React.useState(false);
   const { t } = useTranslation();
 
   function handleLogin(): void {
@@ -31,18 +32,47 @@ const Login: React.FC<Props> = ({ label }) => {
       });
   }
 
+  function handleGuest() {
+    setModal(false);
+    setIsLoading(true);
+    localStorage.setItem("guest", "guest");
+    setGuest("guest");
+    localStorage.setItem("isLoggedIn?", "TRUE");
+    setIsLoggedIn(localStorage.getItem("isLoggedIn?"));
+    localStorage.setItem("TO READ", JSON.stringify([]));
+    localStorage.setItem("FINISHED", JSON.stringify([]));
+    localStorage.setItem("FAVOURITES", JSON.stringify([]));
+    setIsLoading(false);
+    window.location.reload();
+  }
+
   return (
-    <div className="login-container">
-      <p>
-        {t("mustLogin", {
-          label: t(`navbarLabel.${label}`),
-        })}
-      </p>
-      <button onClick={handleLogin} className="google-login">
-        <img src="images/google-logo.png" alt="google login" />
-        {t("googleLogin")}
-      </button>
-    </div>
+    <>
+      <div className="login-container">
+        <p>
+          {t("mustLogin", {
+            label: t(`navbarLabel.${label}`),
+          })}
+        </p>
+        <button onClick={handleLogin} className="google-login">
+          <img src="images/google-logo.png" alt="google login" />
+          {t("googleLogin")}
+        </button>
+        <p onClick={() => setModal(true)} className="guest-message">
+          {t("orGuest")}
+        </p>
+      </div>
+      <div className={modal ? "login-modal" : "login-modal off"}>
+        <div className="modal-content">
+          <p>{t("guestLine1")}</p>
+          <p>{t("guestLine2")}</p>
+          <div className="modal-btns">
+            <button onClick={handleGuest}>{t("guestBtn1")}</button>
+            <button onClick={() => setModal(false)}>{t("guestBtn2")}</button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

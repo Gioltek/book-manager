@@ -7,7 +7,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 import { useTranslation } from "react-i18next";
 
 const Navbar = () => {
-  const { currentUser, currentPage } = useLogin();
+  const { currentUser, currentPage, isLoggedIn } = useLogin();
   const [menu, setMenu] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [checkCurrentPage, setCheckCurrentPage] = useState("");
@@ -47,7 +47,7 @@ const Navbar = () => {
               className={
                 checkCurrentPage === "home"
                   ? "active-section"
-                  : currentUser === null
+                  : isLoggedIn === null
                   ? "disabled-link"
                   : ""
               }
@@ -61,7 +61,7 @@ const Navbar = () => {
               className={
                 checkCurrentPage === "collection"
                   ? "active-section"
-                  : currentUser === null
+                  : isLoggedIn === null
                   ? "disabled-link"
                   : ""
               }
@@ -75,7 +75,7 @@ const Navbar = () => {
               className={
                 checkCurrentPage === "profile"
                   ? "active-section"
-                  : currentUser === null
+                  : isLoggedIn === null
                   ? "disabled-link"
                   : ""
               }
@@ -130,7 +130,13 @@ const Navbar = () => {
           <li>
             <Link
               to="/"
-              className={checkCurrentPage === "home" ? "active-section" : ""}
+              className={
+                checkCurrentPage === "home"
+                  ? "active-section"
+                  : isLoggedIn === null
+                  ? "disabled-link"
+                  : ""
+              }
               onClick={() => setMenu(false)}
             >
               home
@@ -140,7 +146,11 @@ const Navbar = () => {
             <a
               href="/collection"
               className={
-                checkCurrentPage === "collection" ? "active-section" : ""
+                checkCurrentPage === "collection"
+                  ? "active-section"
+                  : isLoggedIn === null
+                  ? "disabled-link"
+                  : ""
               }
               onClick={() => setMenu(false)}
             >
@@ -150,7 +160,13 @@ const Navbar = () => {
           <li>
             <Link
               to="/profile"
-              className={checkCurrentPage === "profile" ? "active-section" : ""}
+              className={
+                checkCurrentPage === "profile"
+                  ? "active-section"
+                  : isLoggedIn === null
+                  ? "disabled-link"
+                  : ""
+              }
               onClick={() => setMenu(false)}
             >
               {t("profile")}

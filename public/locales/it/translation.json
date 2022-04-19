@@ -1,5 +1,6 @@
 {
   "welcome": "Benvenuto",
+  "guest": "Ospite",
   "placeholder": "Cerca un libro...",
   "search": "Cerca",
   "author": "Autore/i",
@@ -29,7 +30,15 @@
   "noPage": "Sembra che questa pagina non esista.",
   "backToHome": "Torna alla",
   "googleLogin": "Accedi con Google",
+  "orGuest": "...o clicca qui per continuare come ospite",
+  "guestLine1": "Potresti perdere la tua collezione se non accedi con Google!",
+  "guestLine2": "Desideri comunque continuare?",
+  "guestBtn1": "Sì, voglio continuare.",
+  "guestBtn2": "No, torna indietro.",
   "mustLogin": "Per entrare nella sezione \"{{label}}\" devi prima effettuare l'accesso.",
+  "logoutLine": "Dopo il logout perderai tutte le tue collezioni. Se desideri conservarle anche dopo il logout, avrai bisogno di accedere tramite Google.",
+  "guestProfile1": "Nessuna informazione disponibile per questo utente.",
+  "guestProfile2": "Accedi con Google per visualizzare il tuo profilo.",
   "navbarLabel": {
     "Home": "Home",
     "Collection": "Collezione",
