@@ -335,39 +335,32 @@ export function BooksProvider({ children }: { children: React.ReactNode }) {
     img: string
   ) {
     let timeoutMs = getTimeoutMs();
-
     if (label === "To Read") {
       setDisableOthers(true);
       handleToRead(bookId, label, title, img);
       //? Make sure to not bug database
-      if (Object.keys(library).length === 0) {
-        const timeout = setTimeout(() => {
-          clearTimeout(timeout);
-          setDisableOthers(false);
-        }, timeoutMs);
-      }
+      const timeout = setTimeout(() => {
+        setDisableOthers(false);
+        clearTimeout(timeout);
+      }, timeoutMs);
     }
     if (label === "Finished") {
       setDisableOthers(true);
       handleFinished(bookId, label, title, img);
       //? Make sure to not bug database
-      if (Object.keys(library).length === 0) {
-        const timeout = setTimeout(() => {
-          clearTimeout(timeout);
-          setDisableOthers(false);
-        }, timeoutMs);
-      }
+      const timeout = setTimeout(() => {
+        setDisableOthers(false);
+        clearTimeout(timeout);
+      }, timeoutMs);
     }
     if (label === "Favourites") {
       setDisableOthers(true);
       handleFavourites(bookId, label, title, img);
       //? Make sure to not bug database
-      if (Object.keys(library).length === 0) {
-        const timeout = setTimeout(() => {
-          clearTimeout(timeout);
-          setDisableOthers(false);
-        }, timeoutMs);
-      }
+      const timeout = setTimeout(() => {
+        setDisableOthers(false);
+        clearTimeout(timeout);
+      }, timeoutMs);
     }
     setTriggerDatabase(triggerDatabase + 1);
   }

@@ -18,7 +18,6 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
 
   const { handleButton, checkActive, disableOthers } = useBooks();
   const { t } = useTranslation();
-  console.log(imageLinks);
 
   return (
     <>
