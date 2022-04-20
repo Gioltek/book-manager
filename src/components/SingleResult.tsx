@@ -18,15 +18,17 @@ const SingleResult: React.FC<Result> = ({ id, volumeInfo }) => {
 
   const { handleButton, checkActive, disableOthers } = useBooks();
   const { t } = useTranslation();
+  console.log(imageLinks);
 
   return (
     <>
       <article className="single-result">
-        {imageLinks ? (
-          <img src={imageLinks.thumbnail} alt={`${title} cover`} />
-        ) : (
-          <img src="./images/questionMark.webp" alt="unknown cover" />
-        )}
+        <img
+          src={
+            imageLinks ? imageLinks.smallThumbnail : "/images/questionMark.webp"
+          }
+          alt="cover"
+        />
         <div className="info-container">
           <p>
             <strong>{t("title")}: </strong>
