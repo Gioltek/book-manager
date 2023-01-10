@@ -69,7 +69,7 @@ const Navbar = () => {
               {t("collection")}
             </a>
           </li>
-          <li>
+          {currentUser && <li>
             <Link
               to="/profile"
               className={
@@ -80,12 +80,12 @@ const Navbar = () => {
                   : ""
               }
             >
-              <span>
+               <span>
                 {t("profile")}
                 <img src={currentUser?.user.photoURL} alt="profile" />
               </span>
             </Link>
-          </li>
+          </li>}
           <li>
             <div className="languages">
               <button
